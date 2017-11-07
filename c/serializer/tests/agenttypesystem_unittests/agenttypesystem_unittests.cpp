@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#include <cmath>
 #include <cstdlib>
 #ifdef _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -213,7 +214,7 @@ DECLARE_GLOBAL_MOCK_METHOD_3(CMocksForAgentTypeSytem, , MULTITREE_RESULT, MultiT
 
 DECLARE_GLOBAL_MOCK_METHOD_3(CMocksForAgentTypeSytem, , JSON_ENCODER_RESULT, JSONEncoder_EncodeTree, MULTITREE_HANDLE, treeHandle, STRING_HANDLE, buffer, JSON_ENCODER_TOSTRING_FUNC, toStringFunc);
 DECLARE_GLOBAL_MOCK_METHOD_2(CMocksForAgentTypeSytem, , JSON_ENCODER_TOSTRING_RESULT, JSONEncoder_CharPtr_ToString, STRING_HANDLE, destination, const void*, value);
-                             
+
 DECLARE_GLOBAL_MOCK_METHOD_0(CMocksForAgentTypeSytem, , STRING_HANDLE, STRING_new);
 DECLARE_GLOBAL_MOCK_METHOD_1(CMocksForAgentTypeSytem, , void, STRING_delete, STRING_HANDLE, s);
 DECLARE_GLOBAL_MOCK_METHOD_2(CMocksForAgentTypeSytem, , int, STRING_concat, STRING_HANDLE, s1, const char*, s2);
@@ -3419,12 +3420,12 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
 
         g_testByTest = MicroMockCreateMutex();
         ASSERT_IS_NOT_NULL(g_testByTest);
-            
+
     }
 
         TEST_SUITE_CLEANUP(TestClassCleanup)
         {
-           
+
             MicroMockDestroyMutex(g_testByTest);
 
             DEINITIALIZE_MEMORY_DEBUG(g_dllByDll);
@@ -3736,7 +3737,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             Destroy_AGENT_DATA_TYPE(&ag);
 
             ///assert
-            ///no crashes, no exception, no runtime errors... 
+            ///no crashes, no exception, no runtime errors...
         }
 
         /*Tests_SRS_AGENT_TYPE_SYSTEM_99_015:[If destination parameter is NULL, AgentDataTypes_ToString shall return AGENT_DATA_TYPES_INVALID_ARG.]*/
@@ -3750,7 +3751,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_INVALID_ARG, res);
         }
-        
+
         /*Tests_SRS_AGENT_TYPE_SYSTEM_99_053:[If value is NULL or has been destroyed or otherwise doesn't contain valid data, AGENT_DATA_TYPES_INVALID_ARG shall be returned.]*/
         TEST_FUNCTION(AgentDataTypes_ToString_with_NULL_value_fails)
         {
@@ -3784,7 +3785,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///cleanup
             STRING_delete(destination);
         }
-        
+
         /*Tests_SRS_AGENT_TYPE_SYSTEM_99_031:[ Creates a AGENT_DATA_TYPE representing an EDM_BOOLEAN.]*/
         TEST_FUNCTION(Create_EDM_BOOLEAN_from_int_succeeds_1)
         {
@@ -3965,7 +3966,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_ERROR, res);
 
             ///cleanup
-            
+
             Destroy_AGENT_DATA_TYPE(&ag);
         }
 
@@ -4102,7 +4103,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             AGENT_DATA_TYPE ag;
             EDM_DATE_TIME_OFFSET someDateTimeOffset;
             someDateTimeOffset.dateTime.tm_year = 114; /*so 2014*/
-            someDateTimeOffset.dateTime.tm_mon = 6 - 1; 
+            someDateTimeOffset.dateTime.tm_mon = 6 - 1;
             someDateTimeOffset.dateTime.tm_mday = 18;
             someDateTimeOffset.dateTime.tm_hour = 9;
             someDateTimeOffset.dateTime.tm_min = 41;
@@ -4290,7 +4291,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleSignalingNaN);
 
             ///assert
@@ -4304,7 +4305,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///arrange
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleSignalingNaN);
 
             ///assert
@@ -4316,7 +4317,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleQuietNaN);
 
             ///assert
@@ -4330,7 +4331,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///arrange
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleQuietNaN);
 
             ///assert
@@ -4342,7 +4343,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleMinusInf);
 
             ///assert
@@ -4357,7 +4358,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoubleMinusInf);
 
             ///assert
@@ -4369,7 +4370,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoublePlusInf);
 
             ///assert
@@ -4383,7 +4384,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///arrange
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDoublePlusInf);
 
             ///assert
@@ -4395,7 +4396,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDouble1);
 
             ///assert
@@ -4408,7 +4409,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agDouble2);
 
             ///assert
@@ -4517,7 +4518,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleSingalingNaN);
 
             ///assert
@@ -4532,7 +4533,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleSingalingNaN);
 
             ///assert
@@ -4544,7 +4545,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleQuietNaN);
 
             ///assert
@@ -4559,7 +4560,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleQuietNaN);
 
             ///assert
@@ -4572,7 +4573,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleMinusInf);
 
             ///assert
@@ -4587,7 +4588,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingleMinusInf);
 
             ///assert
@@ -4601,7 +4602,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSinglePlusInf);
 
             ///assert
@@ -4616,7 +4617,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             EXPECTED_CALL((*mocks), STRING_concat(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
                 .SetReturn(1);
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSinglePlusInf);
 
             ///assert
@@ -4628,7 +4629,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingle1);
 
             ///assert
@@ -4642,7 +4643,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
 
-            ///act 
+            ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &agSingle2);
 
             ///assert
@@ -4925,7 +4926,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///arrange
             AGENT_DATA_TYPE ag;
             Create_AGENT_DATA_TYPE_from_charz(&ag, TEST_STRING_1);
-            
+
             ///act
             auto res = AgentDataTypes_ToString(global_bufferTemp, &ag);
 
@@ -5080,7 +5081,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
             AGENT_DATA_TYPE ag;
-            
+
             ///act
             auto res = Create_AGENT_DATA_TYPE_from_SINT64(&ag, 0);
 
@@ -6268,7 +6269,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
 7       -nn.nn
 8       +nn.nn
 
-        On top of these tests, the following alterations shall be done to make the creation fail: 
+        On top of these tests, the following alterations shall be done to make the creation fail:
         a means a letter such as 'z'
         p means '+'
         m means '-'
@@ -6278,11 +6279,11 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
 1       an           na       N/A        np        N/A           nm       dn        nd
 2       a-n          -na      p-n        -np       m-n           -nm      d-n       -nd
 3       a+n          +na      p+n        +np       m+n           +nm      d+n       +nd
-                                                                                    
+
 4       ann          nna      N/A        nnp       N/A           nnm      dnn       nnd
 5       a-nn         -nna     p-nn       -nnp      m-nn          -nnm     d-nn      -nnd
 6       a+nn         +nna     p+nn       +nnp      m+nn          +nnm     d+nn      +nnd
-                                                                                    
+
 7       an.n          n.na    N/A        n.np      N/A           n.nm     dn.n      n.nd
 8       a-n.n        -n.na    p-n.n      -n.np     m-n.n         -n.nm    d-n.n     -n.nd
 9       a+n.n        +n.na    p+n.n      +n.np     m+n.n         +n.nm    d+n.n     +n.nd
@@ -6290,7 +6291,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
 0       ann.n        nn.na    N/A        nn.np     mnn.n         nn.nm    dnn.n     nn.nd
 1       a-nn.n       -nn.na   p-nn.n     -nn.np    m-nn.n        -nn.nm   d-nn.n    -nn.nd
 2       a+nn.n       +nn.na   p+nn.n     +nn.np    m+nn.n        +nn.nm   d+nn.n    +nn.nd
-                                                                                    
+
 3       an.nn        n.nna    N/A        n.nnp     N/A           n.nnm    dn.nn     n.nnd
 4       a-n.nn       -n.nna   p-n.nn     -n.nnp    m-n.nn        -n.nnm   d-n.nn    -n.nnd
 5       a+n.nn       +n.nna   p+n.nn     +n.nnp    m+n.nn        +n.nnm   d+n.nn    +n.nnd
@@ -8275,7 +8276,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///arrange
             AGENT_DATA_TYPE src, dest;
             (void)Create_EDM_DECIMAL_from_charz(&src, "+3.67");
-            
+
             whenShallSTRING_clone_fail = 1;
             STRICT_EXPECTED_CALL((*mocks), STRING_clone(IGNORED_PTR_ARG))
                 .IgnoreArgument(1);
@@ -8354,7 +8355,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8383,7 +8384,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8412,7 +8413,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8441,7 +8442,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8470,7 +8471,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8499,7 +8500,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8528,7 +8529,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8557,7 +8558,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8586,7 +8587,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8615,7 +8616,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8644,7 +8645,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8673,7 +8674,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8702,7 +8703,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8731,7 +8732,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -8760,7 +8761,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ///assert
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, res);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -9666,7 +9667,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_OK, result);
             ASSERT_ARE_EQUAL(AGENT_DATA_TYPE_TYPE, EDM_INT64_TYPE, agentData.type);
             ASSERT_IS_TRUE(INTMAX_MIN == agentData.value.edmInt64.value);
-        
+
             ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
@@ -10211,7 +10212,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ASSERT_ARE_EQUAL(int16_t, (int16_t)1900, agentData.value.edmDate.year);
             ASSERT_ARE_EQUAL(uint8_t, (uint8_t)2, agentData.value.edmDate.month);
             ASSERT_ARE_EQUAL(uint8_t, (uint8_t)28, agentData.value.edmDate.day);
-        
+
             ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
@@ -12615,7 +12616,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             ASSERT_ARE_EQUAL(int8_t, (int8_t)-8, agentData.value.edmDateTimeOffset.timeZoneHour);
             ASSERT_ARE_EQUAL(uint8_t, (uint8_t)1, agentData.value.edmDateTimeOffset.timeZoneMinute);
 
-            ///cleanup 
+            ///cleanup
             Destroy_AGENT_DATA_TYPE(&agentData);
         }
 
@@ -12626,8 +12627,8 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             AGENT_DATA_TYPE agentData;
 
             struct PointInTime {
-                int year; 
-                int month; 
+                int year;
+                int month;
                 int day;
             } testVectorShallFail[] =
             {
@@ -12663,13 +12664,13 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
                     temp.dateTime.tm_mon = testVectorShallFail[i].month - 1;
                     temp.dateTime.tm_mday = testVectorShallFail[i].day;
                     ///act
-                    
+
                     auto result = Create_AGENT_DATA_TYPE_from_EDM_DATE_TIME_OFFSET(&agentData, temp);
 
                     ///assert
                     ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_INVALID_ARG, result);
 
-                    ///cleanup 
+                    ///cleanup
                 }
             }
         }
@@ -12701,7 +12702,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
                 for (size_t i = 0; i < sizeof(testVectorShallFail) / sizeof(testVectorShallFail[0]); i++)
                 {
                     EDM_DATE_TIME_OFFSET temp = { { 0 } };
-                    temp.dateTime.tm_year = testVectorShallFail[i].year - 1900; 
+                    temp.dateTime.tm_year = testVectorShallFail[i].year - 1900;
                     temp.dateTime.tm_mon = testVectorShallFail[i].month - 1;
                     temp.dateTime.tm_mday = testVectorShallFail[i].day;
                     temp.dateTime.tm_hour = testVectorShallFail[i].hour;
@@ -12713,7 +12714,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
                     ///assert
                     ASSERT_ARE_EQUAL(AGENT_DATA_TYPES_RESULT, AGENT_DATA_TYPES_INVALID_ARG, result);
 
-                    ///cleanup 
+                    ///cleanup
                 }
             }
         }
@@ -12813,8 +12814,8 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
             AGENT_DATA_TYPE agentData;
-            
-            
+
+
             for (size_t i = 0; i < sizeof(global_testVector) / sizeof(global_testVector[0]); i++)
             {
                 ///arrange
@@ -12854,7 +12855,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
 
             for (size_t i = 0; i < sizeof(global_testVector) / sizeof(global_testVector[0]); i++)
             {
-                
+
                 ///act
                 auto resFromString = CreateAgentDataType_From_String(global_testVector[i].expectedOutput, EDM_DATE_TIME_OFFSET_TYPE, &agentData);
 
@@ -12969,7 +12970,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         {
             ///arrange
             AGENT_DATA_TYPE ag;
-            
+
             for (size_t i = 0; i < sizeof(testVector_EDM_BINARY) / sizeof(testVector_EDM_BINARY[0]); i++)
             {
                 ///arrange
@@ -13370,7 +13371,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
         TEST_FUNCTION(CreateAgentDataType_with_wrong_characters_fails)
         {
             ///arrange
-            
+
             const char* badGuids[] = {
                 /* good guid  "\"21EC2020-3AEA-1069-A2DD-08002B30309D\""                                                  */
                 "a21EC2020-3AEA-1069-A2DD-08002B30309D\""
@@ -13501,7 +13502,7 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
             for (int year = -9999; year <= 9999; year++) //full ODATA range
             {
                 int yday = 0;
-                for (int month = 1; month <= 12; month++) //full month range 
+                for (int month = 1; month <= 12; month++) //full month range
                 {
                     int days[3]; /*test the first day, some day in the middle, and the last day of the month*/
                     days[0] = 1;

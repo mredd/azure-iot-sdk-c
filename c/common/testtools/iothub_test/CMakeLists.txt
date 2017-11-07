@@ -21,7 +21,6 @@ set(iothub_test_h_files
 set(IOTHUB_TEST_INC_FOLDER ${CMAKE_CURRENT_LIST_DIR}/inc CACHE INTERNAL "this is what needs to be included if using iothub_test" FORCE)
 
 include_directories(${IOTHUB_TEST_INC_FOLDER} ${COMMON_INC_FOLDER})
-includeProton()
 
 IF(WIN32)
 	#windows needs this define
@@ -30,3 +29,4 @@ IF(WIN32)
 ENDIF(WIN32)
 
 add_library(iothub_test ${iothub_test_c_files} ${iothub_test_h_files})
+target_link_libraries(iothub_test qpid-proton)

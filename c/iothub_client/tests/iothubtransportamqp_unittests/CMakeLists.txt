@@ -22,3 +22,10 @@ set(${theseTestsName}_h_files
 )
 
 build_test_artifacts(${theseTestsName} ON)
+if(TARGET ${theseTestsName}_lib)
+	target_link_libraries(${theseTestsName}_lib qpid-proton)
+elseif(TARGET ${theseTestsName}_exe)
+	target_link_libraries(${theseTestsName}_exe qpid-proton)
+else()
+	message(AUTHOR_WARNING "The internal azure structures have changed. This target might have issues because of missing qpid-proton dependency.")
+endif()

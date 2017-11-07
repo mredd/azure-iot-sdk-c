@@ -64,7 +64,7 @@ if(${use_mqtt})
 		./src/iothubtransportmqtt.c
 		./adapters/mqttapi_paho.c
 	)
-	
+
 	set(iothub_client_mqtt_transport_h_files
 		${iothub_client_ll_transport_h_files}
 		./inc/iothubtransportmqtt.h
@@ -118,34 +118,38 @@ if(${use_amqp})
 endif()
 
 if(${use_http})
-	add_library(iothub_client_http_transport 
-		${iothub_client_http_transport_c_files} 
+	add_library(iothub_client_http_transport
+		${iothub_client_http_transport_c_files}
 		${iothub_client_http_transport_h_files}
 	)
 endif()
 
 if(${use_amqp})
-	add_library(iothub_client_amqp_transport 
-		${iothub_client_amqp_transport_c_files} 
+	add_library(iothub_client_amqp_transport
+		${iothub_client_amqp_transport_c_files}
 		${iothub_client_amqp_transport_h_files}
+	)
+	target_link_libraries(iothub_client_amqp_transport
+		PRIVATE
+		qpid-proton
 	)
 endif()
 
 if(${use_mqtt})
-	add_library(iothub_client_mqtt_transport 
-		${iothub_client_mqtt_transport_c_files} 
+	add_library(iothub_client_mqtt_transport
+		${iothub_client_mqtt_transport_c_files}
 		${iothub_client_mqtt_transport_h_files}
 	)
 endif()
 
-add_library(iothub_client 
-	${iothub_client_c_files} 
+add_library(iothub_client
+	${iothub_client_c_files}
 	${iothub_client_h_files}
 )
 
-add_subdirectory(samples)
-
-if(NOT IN_OPENWRT)
-# Disable tests for OpenWRT
-add_subdirectory(tests)
-endif()
+# add_subdirectory(samples)
+#
+# if(NOT IN_OPENWRT)
+# # Disable tests for OpenWRT
+# add_subdirectory(tests)
+# endif()
